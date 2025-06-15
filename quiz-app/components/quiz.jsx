@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Quiz() {
     const location = useLocation();
+    const navigate = useNavigate();
     const { name, category, difficulty } = location.state;
     const [questions, setQuestions] = useState([]);
     const [currIndex, setCurrIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [selAnswer, setSelAnswer] = useState("");
     const [showResult, setShowResult] = useState(false);
+    const [showFeedback, setShowFeedback] = useState(false);
+    const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
 
     //fetch questions from API
     useEffect(() => {
@@ -38,16 +41,13 @@ function Quiz() {
     }, [category, difficulty]);
 
     const handleAnswer = (answer) => {
-        if (answer === questions[currIndex].correct) {
+        setSelAnswer(answer);
+        const correct = answer === questions[currIndex].correct;
+        setIsAnswerCorrect(correct);
+        if (correct) {
             setScore((prev) => prev + 1);
         }
-
-        if (currIndex + 1 < questions.length) {
-            setCurrIndex((prev) => prev + 1);
-            setSelAnswer("");
-        } else {
-            setShowResult(true);
-        }
+        setShowFeedback(true);
     };
 
     if (questions.length === 0) {
@@ -61,11 +61,23 @@ function Quiz() {
             <div className="quiz-container"> 
                 <h2>Quiz Completed</h2>
                 <p>{name}, your score is {score} out of {questions.length}</p>
+                <button onClick={() => navigate("/")}>Start Over</button>
             </div>
-        );
+        );  
     }
 
     const currQuestion = questions[currIndex];
+
+    const handleNext = () => {
+        setShowFeedback(false);
+        setSelAnswer("");
+
+        if (currIndex + 1 < questions.length) {
+            setCurrIndex((prev) => prev + 1);
+        } else {
+            setShowResult(true);
+        }
+    }
     
     return (
         <div className="quiz-container">
@@ -74,10 +86,23 @@ function Quiz() {
             <ul>
                 {currQuestion.answers.map((answer, idx) => (
                     <li key={idx}>
-                        <button onClick={() => handleAnswer(answer)} disabled={selAnswer} dangerouslySetInnerHTML={{__html: answer}}/>
+                        <button onClick={() => handleAnswer(answer)} disabled={!!selAnswer} dangerouslySetInnerHTML={{__html: answer}}/>
                     </li>
                 ))}
             </ul>
+
+            {showFeedback && (
+                <div className="feedback">
+                    {isAnswerCorrect ? (
+                        <p>Great job, {name}! You got the correct answer.</p>
+                    ) : (
+                        <p>Sorry, {name}. That's incorrect. The correct answer is:{""}
+                            <span dangerouslySetInnerHTML={{__html: questions[currIndex].correct}}/>
+                        </p>
+                    )}
+                    <button onClick={handleNext}>Next Question</button>
+                </div>
+            )}
         </div>
     );
 }
