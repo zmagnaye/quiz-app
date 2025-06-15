@@ -40,3 +40,63 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Styling */
+body {
+  background-image: url("https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjItMDk0LXguanBn.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  color: #412920;
+}
+
+.home-container {
+  max-width: 500px;
+  margin: 5rem auto;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.instructions {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  background-color: #412920;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #5b3a2a;
+}
+
+.error-message {
+  color: rgb(235, 79, 79);
+  margin-top: 0.5rem;
+}
