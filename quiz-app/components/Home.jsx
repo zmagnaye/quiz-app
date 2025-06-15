@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ function Home() {
     });
     
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
@@ -28,6 +30,8 @@ function Home() {
         //If no error, proceed
         setError("");
         console.log("Form submitted: ", formData);
+
+        navigate("quiz", {state: formData});
     };
 
     return (
